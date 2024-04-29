@@ -131,3 +131,4 @@ dmypy.json
 bin
 mpv-latest.tar.gz
 /.idea/.gitignore
+.idea
