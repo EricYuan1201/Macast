@@ -6,7 +6,7 @@ name: Build Macast
 on:
   push:
     branches:
-      - dev_test
+      - main
       - morelog
   pull_request:
   workflow_dispatch:
