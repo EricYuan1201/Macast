@@ -26,7 +26,7 @@ on:
 
 jobs:
   release:
-    needs: [ build-nt, build-darwin, build-amd64, build-armv7 ]
+    needs: [ build-darwin]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
