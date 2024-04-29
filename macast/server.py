@@ -86,8 +86,8 @@ class Service:
         self.ssdp_plugin = SSDPPlugin(cherrypy.engine)
         self.ssdp_plugin.subscribe()
         self._renderer = renderer
-        self.renderer_plugin = RendererPlugin(cherrypy.engine, renderer)
-        self.renderer_plugin.subscribe()
+        # self.renderer_plugin = RendererPlugin(cherrypy.engine, renderer)
+        # self.renderer_plugin.subscribe()
         self._protocol = protocol
         self.protocol_plugin = ProtocolPlugin(cherrypy.engine, protocol)
         self.protocol_plugin.subscribe()

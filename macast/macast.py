@@ -243,9 +243,11 @@ class Macast(App):
         self.ip_menuitem = MenuItem("{}:{}".format(ip_text, port), enabled=False)
         self.version_menuitem = MenuItem(
             "{} v{}".format(Setting.get_friendly_name(), Setting.get_version()), enabled=False)
+        # 自动检测更新
         self.auto_check_update_menuitem = MenuItem(_("Auto Check Updates"),
                                                    self.on_auto_check_update_click,
                                                    checked=self.setting_check)
+        # 自动登录
         self.start_at_login_menuitem = MenuItem(_("Start At Login"),
                                                 self.on_start_at_login_click,
                                                 checked=self.setting_start_at_login)
@@ -309,19 +311,19 @@ class Macast(App):
         self.about_menuitem = MenuItem(_("Help"), self.on_about_click)
 
         self.menubar_icon_menuitem.items()[self.setting_menubar_icon].checked = True
-        player_settings = self.service.renderer.renderer_setting.build_menu()
+        # 禁调播放器相关
+        # player_settings = self.service.renderer.renderer_setting.build_menu()
+        player_settings = []
         if len(player_settings) > 0:
             player_settings.append(None)
-
+        # 禁调播放器相关自动更新，help相关
         return [self.version_menuitem, self.ip_menuitem] + \
                renderer_select + \
                protocol_select + \
                [None] + \
                player_settings + \
-               [self.menubar_icon_menuitem, self.auto_check_update_menuitem,
-                self.open_config_menuitem, self.advanced_menuitem] + \
-               platform_options + \
-               [None, self.check_update_menuitem, self.about_menuitem]
+               [self.open_config_menuitem] + \
+               platform_options
 
     def init_setting(self):
         self.setting_start_at_login = Setting.get(SettingProperty.StartAtLogin, 0)
@@ -329,13 +331,13 @@ class Macast(App):
         self.setting_menubar_icon = Setting.get(SettingProperty.MenubarIcon, 1 if sys.platform == 'darwin' else 0)
         self.setting_renderer = Setting.get(SettingProperty.Macast_Renderer, 'MPV')
         self.setting_protocol = Setting.get(SettingProperty.Macast_Protocol, 'DLNA')
-        if self.setting_check:
-            threading.Thread(target=self.check_update,
-                             kwargs={
-                                 'verbose': False
-                             },
-                             daemon=True,
-                             name="CHECKUPDATE_THREAD").start()
+        # if self.setting_check:
+        #     threading.Thread(target=self.check_update,
+        #                      kwargs={
+        #                          'verbose': False
+        #                      },
+        #                      daemon=True,
+        #                      name="CHECKUPDATE_THREAD").start()
 
     def stop_cast(self):
         self.service.stop()
@@ -503,8 +505,8 @@ class Macast(App):
 
 
 def gui(renderer=None, protocol=None, lang=gettext.gettext):
-    if renderer is None:
-        renderer = MPVRenderer(lang, Setting.mpv_default_path)
+    # if renderer is None:
+    #     renderer = MPVRenderer(lang, Setting.mpv_default_path)
     if protocol is None:
         protocol = DLNAProtocol()
     Macast(renderer, protocol, lang).start()
