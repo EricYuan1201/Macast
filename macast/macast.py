@@ -505,8 +505,8 @@ class Macast(App):
 
 
 def gui(renderer=None, protocol=None, lang=gettext.gettext):
-    # if renderer is None:
-    #     renderer = MPVRenderer(lang, Setting.mpv_default_path)
+    if renderer is None:
+        renderer = MPVRenderer(lang, Setting.mpv_default_path)
     if protocol is None:
         protocol = DLNAProtocol()
     Macast(renderer, protocol, lang).start()
